@@ -6,7 +6,11 @@
 
 const Config = require('./config.json')
 const Discord = require('discord.js')
+const DNS = require('dns')
 const util = require('util')
+
+// Set our DNS server(s) to those for the .trtl TLD
+DNS.setServers(Config.dnsServers)
 
 const client = new Discord.Client()
 
@@ -31,6 +35,15 @@ function tryMessageReact (message, reaction) {
       return resolve(true)
     }).catch(() => {
       return resolve(false)
+    })
+  })
+}
+
+function resolveHostname (hostname) {
+  return new Promise((resolve, reject) => {
+    DNS.resolve(hostname, 'A', (err, records) => {
+      if (err) return reject(err)
+      return resolve(records)
     })
   })
 }
@@ -93,6 +106,8 @@ function commandHandler (receivedMessage) {
       return helpCommand(receivedMessage)
     case 'register':
       return registerCommand(args, receivedMessage)
+    case 'check':
+      return checkDomainARecord(args, receivedMessage)
     default:
       return tryChannelSendMessage(receivedMessage.channel, 'That is not a command I understand yet')
   }
@@ -125,6 +140,21 @@ function registerCommand (args, receivedMessage) {
   }
 
   tryChannelSendMessage(receivedMessage.channel, 'This is fine')
+}
+
+function checkDomainARecord (args, receivedMessage) {
+  if (args.length !== 1 || args[0].toLowerCase().indexOf('.trtl') === -1) {
+    tryChannelSendMessage(receivedMessage.channel, 'You must specify a .trtl domain to check. The syntax should be `.trtl check <DOMAIN>.trtl`')
+    return tryMessageReact(receivedMessage, '💩')
+  }
+
+  resolveHostname(args[0].toLowerCase()).then((records) => {
+    tryChannelSendMessage(receivedMessage.channel, util.format('Resolved %s to %s', args[0].toLowerCase(), records.join(',')))
+    return tryMessageReact(receivedMessage, '🐢')
+  }).catch(() => {
+    tryChannelSendMessage(receivedMessage.channel, 'Could not resolve the specified domain')
+    return tryMessageReact(receivedMessage, '💩')
+  })
 }
 
 /*
