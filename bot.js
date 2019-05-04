@@ -193,14 +193,13 @@ function registerCommand(args, receivedMessage) {
     );
 
     // zpalm's validation
-    if (validDomain) {
+    if (!validDomain) {
         tryChannelSendMessage(
             receivedMessage.channel,
             "This is not a community suffix I recognize yet. Options: `.fork.trtl`, `.pool.trtl`, `.user.trtl`, `.node.trtl`, `.dev.trtl`, `.bot.trtl`"
         );
         return tryMessageReact(receivedMessage, "🐢");
-    }
-    if (!validDomain) {
+    } else {
         tryChannelSendMessage(
             receivedMessage.channel,
             "**[PASS]** Suffix type "
