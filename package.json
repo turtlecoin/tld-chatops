@@ -1,0 +1,35 @@
+{
+  "name": "tld-chatops",
+  "version": "0.0.1",
+  "description": ".trtl TLD ChatOps Bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turtlecoin/tld-chatops.git"
+  },
+  "keywords": [
+    "TurtleCoin",
+    ".trtl",
+    "tld",
+    "bot"
+  ],
+  "author": "The TurtleCoin Developers",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/turtlecoin/tld-chatops/issues"
+  },
+  "homepage": "https://github.com/turtlecoin/tld-chatops#readme",
+  "dependencies": {
+    "bufferutil": "^3.0.3",
+    "discord.js": "^11.4.2",
+    "erlpack": "github:discordapp/erlpack",
+    "libsodium-wrappers": "^0.7.3",
+    "node-opus": "^0.3.1",
+    "opusscript": "0.0.6",
+    "sodium": "^3.0.2",
+    "uws": "^99.0.0"
+  }
+}
