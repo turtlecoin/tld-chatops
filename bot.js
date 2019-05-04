@@ -77,8 +77,6 @@ function commandHandler (receivedMessage) {
   let fullCommand = receivedMessage.content.substr(6)
   let splitCommand = fullCommand.split(' ')
   let primaryCommand = splitCommand[0]
-
-  /* Find our arguments and drop them all to lowercase for easier matching later */
   let args = splitCommand.slice(1)
 
   console.log('\nCommand received: ' + primaryCommand)
